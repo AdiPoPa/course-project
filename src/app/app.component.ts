@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  loadedSelection = 'recipe';
+
+  onNavigate(selection: string) {
+    this.loadedSelection = selection;
+    console.log('navigating to ' + selection);
+  }
+
 }
