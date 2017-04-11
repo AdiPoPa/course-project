@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   @Output() componentSelected = new EventEmitter<string>();
 
   onSelect(selection: string) {
-    this.componentSelected.emit(selection);
+
     console.log(selection + ' was clicked');
   }
 

@@ -12,10 +12,10 @@
   <div class="col-xs-12">
     <div class="btn-group" appDropdown>
       <button type="button" class="btn btn-primary dropdown-toggle">Manage Recipe <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a (click)="onAddToShoppingList()" style="cursor: pointer;">To shopping list</a></li>
-        <li><a href="#">Edit recipe</a></li>
-        <li><a href="#">Delete recipe</a></li>
+      <ul class="dropdown-menu" style="cursor: pointer;">
+        <li><a (click)="onAddToShoppingList()">To shopping list</a></li>
+        <li><a (click)="onEditRecipe()">Edit recipe</a></li>
+        <li><a>Delete recipe</a></li>
       </ul>
     </div>
   </div>
