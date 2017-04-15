@@ -10,8 +10,9 @@ export class ShoppingListService {
     new Ingredient('Tomatoes', 10),
   ];
 
-  ingredientChanged = new Subject<Ingredient[]>();
+  ingredientsChanged = new Subject<Ingredient[]>();
   startedEditing = new Subject<number>();
+  fromRecipe = false;
 
   constructor() { }
 
@@ -25,53 +26,54 @@ export class ShoppingListService {
 
   addIngredient(ingredient: Ingredient) {
     const ingredientSearched = this.searchIngredient(ingredient);
-    if (ingredientSearched == -1) {
+    if (ingredientSearched == null) {
+      ingredient.name = ingredient.name.charAt(0).toUpperCase() + ingredient.name.slice(1);
       this.ingredients.push(ingredient);
     } else {
-      this.ingredients[ingredientSearched].amount += ingredient.amount;
+      ingredientSearched.amount += ingredient.amount;
     }
-    this.ingredientChanged.next(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   extractAmount(ingredient: Ingredient) {
     const ingredientSearched = this.searchIngredient(ingredient);
-    if (ingredientSearched != -1) {
-      if (this.ingredients[ingredientSearched].amount >= ingredient.amount) {
-        this.ingredients[ingredientSearched].amount -= ingredient.amount;
+    if (ingredientSearched != null) {
+      if (ingredientSearched.amount > ingredient.amount) {
+        ingredientSearched.amount -= ingredient.amount;
       } else {
-        this.ingredients.splice(ingredientSearched, 1);
+        const ingredientPos = this.ingredients.indexOf(ingredientSearched);
+        this.ingredients.splice(ingredientPos, 1);
       }
-      this.ingredientChanged.next(this.ingredients.slice());
     }
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   searchIngredient(ingredient: Ingredient) {
-    for (let i = 0; i < this.ingredients.length; i++) {
-      if (this.ingredients[i].name === ingredient.name) {
-        return i;
+    for (let ingr of this.ingredients) {
+      if (ingr.name.toLowerCase() === ingredient.name.toLowerCase()) {
+        return ingr;
       }
     }
-    return -1;
+    return null;
   }
 
   addIngredients(ingredients: Ingredient[]) {
-    this.ingredients.push(...ingredients); // ... - spread operator (wtf?!)
-    this.ingredientChanged.next(this.ingredients.slice());
-    /*
-     for (let ingredient of ingredients) {
-     this.addIngredient(ingredient);
-     }
-     */
+    for (let ingredient of ingredients) {
+      const newIngredient = new Ingredient(ingredient.name, ingredient.amount);
+      this.addIngredient(newIngredient);
+    }
+    // this.ingredients.push(...ingredients); // ... - spread operator (wtf?!)
+    // this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   updateIngredient(index: number, newIngredient: Ingredient) {
     this.ingredients[index] = newIngredient;
-    this.ingredientChanged.next(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   deleteIngredient(index: number) {
     this.ingredients.splice(index, 1);
-    this.ingredientChanged.next(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
 }
