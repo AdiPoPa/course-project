@@ -5,7 +5,6 @@ import { ShoppingListService } from '../components/shopping-list/shopping-list.s
 import 'rxjs/Rx';
 import { Recipe } from '../components/recipes/recipe.model';
 import { AuthService } from '../components/auth/auth.service';
-import { promise } from 'selenium-webdriver';
 
 @Injectable()
 export class DataStorageService {
