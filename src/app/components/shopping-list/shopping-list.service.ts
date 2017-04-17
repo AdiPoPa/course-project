@@ -62,7 +62,7 @@ export class ShoppingListService {
       const newIngredient = new Ingredient(ingredient.name, ingredient.amount);
       this.addIngredient(newIngredient);
     }
-    // this.ingredients.push(...ingredients); // ... - spread operator (wtf?!)
+    // this.ingredients.push(...ingredients); // ... - spread operator
     // this.ingredientsChanged.next(this.ingredients.slice());
   }
 
