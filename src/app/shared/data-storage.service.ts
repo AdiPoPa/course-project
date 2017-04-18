@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import 'rxjs/Rx';
+
+import { Recipe } from '../components/recipes/recipe.model';
 import { RecipeService } from '../components/recipes/recipe.service';
 import { ShoppingListService } from '../components/shopping-list/shopping-list.service';
-import 'rxjs/Rx';
-import { Recipe } from '../components/recipes/recipe.model';
 import { AuthService } from '../components/auth/auth.service';
 
 @Injectable()

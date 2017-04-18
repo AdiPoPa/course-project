@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -13,6 +14,7 @@ export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
   anyIngredients = false;
+  imageValid  = false;
   recipeForm: FormGroup;
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) { }
@@ -22,6 +24,7 @@ export class RecipeEditComponent implements OnInit {
       (params: Params) => {
         this.id = +params['id'];
         this.editMode = params['id'] != null;
+        this.imageValid = false;
         this.initForm();
       }
     );
@@ -51,6 +54,10 @@ export class RecipeEditComponent implements OnInit {
         ])
       })
     )
+  }
+
+  getIngredients(recipeForm) {
+    return recipeForm.get('ingredients').controls;
   }
 
   onDeleteIngredient(index: number) {
@@ -94,6 +101,16 @@ export class RecipeEditComponent implements OnInit {
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'ingredients': recipeIngredients
+    });
+  }
+
+  imageValidation(control: FormControl): Promise<any> | Observable<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (!this.imageValid) {
+        resolve({'imageInvalid': true});
+      } else {
+        resolve(null);
+      }
     });
   }
 
